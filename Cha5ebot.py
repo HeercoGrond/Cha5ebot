@@ -103,4 +103,5 @@ config = configparser.ConfigParser()
 config.read(currentPath + "/config/bot.ini")
 token = config['DEFAULT']['token']
 
-client.run(token)
+if token != "":
+    client.run(token)
