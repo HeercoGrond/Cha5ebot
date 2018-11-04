@@ -1,5 +1,5 @@
 # Config Folder and file.
-config/*
+config/*.ini
 
 # Server data
-servers/*
+servers/*/
