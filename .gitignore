@@ -1,0 +1,5 @@
+# Config Folder and file.
+config/*
+
+# Server data
+servers/*
