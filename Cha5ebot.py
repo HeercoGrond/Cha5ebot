@@ -19,6 +19,7 @@ async def on_ready():
 @client.event
 async def on_message(message):
     if message.author.id != client.user.id:
+        channel = message.channel
         if "!statarray" in message.content:
             stats = []
             for x in range(6):
@@ -31,7 +32,7 @@ async def on_message(message):
                 stats.append(sum(currentStat))
 
             statsString = ' '.join(str(e) for e in stats)
-            await client.send_message(message.channel, "Current array for assignable stats is: " + statsString)
+            await channel.send("Current array for assignable stats is: " + statsString)
 
         if message.content.startswith("!roll"):
             detailed = "detailed" in message.content
@@ -52,9 +53,9 @@ async def on_message(message):
                     outcome += randomNumber
 
                 outcome += bonus
-                await client.send_message(message.channel, "Rolled " + str(diceAmount) + " d" + str(diceEyes) + " with a bonus of " + str(bonus) + " for a total count of: " + str(outcome))
+                await channel.send("Rolled " + str(diceAmount) + " d" + str(diceEyes) + " with a bonus of " + str(bonus) + " for a total count of: " + str(outcome))
                 if detailed:
-                        await client.send_message(message.channel, "Details on the rolls: " + outcomeList + " }")
+                        await channel.send("Details on the rolls: " + outcomeList + " }")
                 
             else:
                 filteredString = re.search(r'[0-9]+d[0-9]+', message.content)
@@ -71,9 +72,9 @@ async def on_message(message):
                             outcomeList += str(randomNumber) + " , "
                         outcome += randomNumber
 
-                    await client.send_message(message.channel, "Rolled " + str(diceAmount) + " d" + str(diceEyes) + " for a total count of: " + str(outcome))
+                    await channel.send("Rolled " + str(diceAmount) + " d" + str(diceEyes) + " for a total count of: " + str(outcome))
                     if detailed:
-                        await client.send_message(message.channel, "Details on the rolls: " + outcomeList + " }")
+                        await channel.send("Details on the rolls: " + outcomeList + " }")
                 else:
                     secondaryFilter = re.search(r'd[0-9]+', message.content)
                     if secondaryFilter:
@@ -81,9 +82,9 @@ async def on_message(message):
                         argsList = matchedString.split('d')
                         diceEyes = int(argsList[1])
                         outcome = randint(1, diceEyes)
-                        await client.send_message(message.channel, "Rolled a d" + str(diceEyes) + " for: " + str(outcome))
+                        await channel.send("Rolled a d" + str(diceEyes) + " for: " + str(outcome))
                     else:
-                        await client.send_message(message.channel, "That is not a valid die. Proper formatting is `!roll {x]d{y}` or `!roll d{x}`")
+                        await channel.send("That is not a valid die. Proper formatting is `!roll {x]d{y}` or `!roll d{x}`")
 
         if message.content.startswith("!charsheet"):
             if message.server != None:
