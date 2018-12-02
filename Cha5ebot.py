@@ -7,7 +7,7 @@ import os
 import configparser
 
 client = commands.Bot(command_prefix='>')
-extensions = ['modules.charactersheet','modules.statarray']
+extensions = ['modules.charactersheet','modules.statarray','modules.spells']
 currentPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
 @client.event
