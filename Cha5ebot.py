@@ -87,17 +87,17 @@ class ChaseBot(discord.Client):
                             await channel.send("That is not a valid die. Proper formatting is `!roll {x]d{y}` or `!roll d{x}`")
 
             if message.content.startswith("!charsheet"):
-                if message.server != None:
-                    currentServerPath = currentPath + "/servers/" + message.server.id
-                    print(currentServerPath)
+                if message.guild != None:
+                    currentGuildPath = currentPath + "/guilds/" + str(message.guild.id)
+                    print(currentGuildPath)
 
-                    if not os.path.exists(currentServerPath):
-                        os.makedirs(currentServerPath)
+                    if not os.path.exists(currentGuildPath):
+                        os.makedirs(currentGuildPath)
 
-                    currentUserPath = currentServerPath + "/user/" + message.author.id
+                    currentUserPath = currentGuildPath + "/user/" + str(message.author.id)
                     if not os.path.exists(currentUserPath):
                         os.makedirs(currentUserPath)
-                        print("Created charsheet folder for user " + message.author.id)
+                        print("Created charsheet folder for user " + str(message.author.id))
                 
 
 config = configparser.ConfigParser()
