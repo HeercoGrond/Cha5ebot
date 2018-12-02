@@ -6,3 +6,6 @@ guilds/*/
 
 # Python Caching
 __pycache__
+
+# VSCode Settings
+.vscode
