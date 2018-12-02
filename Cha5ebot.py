@@ -8,7 +8,7 @@ import os
 import configparser
 
 client = commands.Bot(command_prefix = ">")
-
+extensions = ['modules.charactersheet']
 currentPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
 @client.event
@@ -107,4 +107,10 @@ config.read(currentPath + "/config/bot.ini")
 token = config['DEFAULT']['token']
 
 if token != "":
-    client.run(token)
+    if __name__ == "__main__":
+        for extension in extensions:
+            try:
+                client.load_extension(extension)
+            except Exception as error:
+                print(error)
+        client.run(token)

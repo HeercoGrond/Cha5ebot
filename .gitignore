@@ -3,3 +3,6 @@ config/*.ini
 
 # Server data
 guilds/*/
+
+# Python Caching
+__pycache__
