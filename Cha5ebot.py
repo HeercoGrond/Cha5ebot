@@ -7,7 +7,7 @@ import os
 import configparser
 
 client = commands.Bot(command_prefix='>')
-extensions = ['modules.charactersheet','modules.statarray','modules.rolldice']
+# extensions = ['charactersheet','statarray','rolldice']
 currentPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
 @client.event
@@ -24,14 +24,18 @@ async def stop(ctx):
 config = configparser.ConfigParser()
 config.read(currentPath + "/config/bot.ini")
 token = config['DEFAULT']['token']
+modules = config['MODULES']['active']
 
 if token != "":
     if __name__ == "__main__":
-        for extension in extensions:
-            try:
-                client.load_extension(extension)
-            except Exception as error:
-                print(error)
+
+        if modules != "":
+            extensions = [x.strip() for x in modules.split(',')]
+            for extension in extensions:
+                try:
+                    client.load_extension('modules.' + extension)
+                except Exception as error:
+                    print(error)
 
 
         client.run(token)
