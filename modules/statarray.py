@@ -10,11 +10,10 @@ class StatArray:
 
     @commands.command()
     async def statarray(self, ctx):
-        print("I did the statarray thing")
         stats = []
-        for x in range(6):
+        for _ in range(6):
             currentStat = []
-            for y in range(4):
+            for _ in range(4):
                 currentStat.append(randint(1, 6))
 
             lowestDie = min(currentStat)
