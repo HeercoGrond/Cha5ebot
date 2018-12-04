@@ -1,5 +1,6 @@
 from discord.ext import commands
 from random import randint
+import json
 
 class Spells:
     def __init__(self, client):
@@ -10,6 +11,10 @@ class Spells:
 
     @commands.command()
     async def spell(self, ctx, arguments):
+        print(arguments)
+
+    @commands.command()
+    async def cast(self, ctx, arguments):
         print(arguments)
         
 def setup(client):
