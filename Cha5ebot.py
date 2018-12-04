@@ -6,9 +6,16 @@ import inspect
 import os
 import configparser
 
-client = commands.Bot(command_prefix='>')
-# extensions = ['charactersheet','statarray','rolldice']
 currentPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+config = configparser.ConfigParser()
+config.read(currentPath + "/config/bot.ini")
+token = config['DEFAULT']['token']
+modules = config['MODULES']['active']
+prefix = config['DEFAULT']['prefix']
+
+client = commands.Bot(command_prefix=prefix)
+# extensions = ['charactersheet','statarray','rolldice']
+
 
 @client.event
 async def on_ready():
@@ -21,10 +28,6 @@ async def on_ready():
 async def stop(ctx):
     await client.logout()
 
-config = configparser.ConfigParser()
-config.read(currentPath + "/config/bot.ini")
-token = config['DEFAULT']['token']
-modules = config['MODULES']['active']
 
 if token != "":
     if __name__ == "__main__":
