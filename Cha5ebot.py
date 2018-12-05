@@ -6,11 +6,8 @@ import inspect
 import os
 import configparser
 
-<<<<<<< HEAD
 client = commands.Bot(command_prefix='>')
 extensions = ['modules.charactersheet','modules.statarray','modules.rolldice','modules.spells']
-=======
->>>>>>> origin/develop
 currentPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 config = configparser.ConfigParser()
 config.read(currentPath + "/config/bot.ini")

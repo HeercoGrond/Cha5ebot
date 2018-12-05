@@ -11,11 +11,13 @@ class Spells:
 
     @commands.command()
     async def spell(self, ctx, arguments):
-        print(arguments)
+        with open('./libraries/spell_library.json') as f:
+            spell_data = json.load(f)
+        await ctx.send(spell_data[arguments])
 
     @commands.command()
-    async def cast(self, ctx, arguments):
-        await ctx.send("Casting " + arguments)
+    async def cast(self, ctx, *, arg):
+        await ctx.send("Casting " + arg)
         
 def setup(client):
     client.add_cog(Spells(client))
