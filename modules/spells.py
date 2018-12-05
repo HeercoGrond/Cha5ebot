@@ -15,7 +15,7 @@ class Spells:
 
     @commands.command()
     async def cast(self, ctx, arguments):
-        print(arguments)
+        await ctx.send("Casting " + arguments)
         
 def setup(client):
     client.add_cog(Spells(client))
