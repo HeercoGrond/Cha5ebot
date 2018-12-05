@@ -10,10 +10,10 @@ class Spells:
         print("loaded cog")
 
     @commands.command()
-    async def spell(self, ctx, arguments):
-        with open('./libraries/spell_library.json') as f:
+    async def spell(self, ctx, *, arg):
+        with open('./modules/libraries/spell_library.json') as f:
             spell_data = json.load(f)
-        await ctx.send(spell_data[arguments])
+        await ctx.send(spell_data[arg])
 
     @commands.command()
     async def cast(self, ctx, *, arg):
