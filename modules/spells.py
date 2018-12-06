@@ -1,9 +1,7 @@
 from discord.ext import commands
 from random import randint
 import json
-import sys
-sys.path.append('./modules/libraries')
-import roll
+from modules.libraries.roll import roll_dice
 
 class Spells:
     def __init__(self, client):
@@ -24,7 +22,9 @@ class Spells:
         with open('./modules/libraries/spell_library.json') as f:
             spell = json.load(f)
 
-        # await ctx.send(">roll " + spell[arg]["damage"])
+
+            message = roll_dice(spell[arg]["damage"])
+            await ctx.send(message)
         
 def setup(client):
     client.add_cog(Spells(client))

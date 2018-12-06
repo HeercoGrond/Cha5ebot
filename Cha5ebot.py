@@ -5,6 +5,7 @@ import re
 import inspect
 import os
 import configparser
+from modules.libraries.roll import roll_dice
 
 client = commands.Bot(command_prefix='>')
 extensions = ['modules.charactersheet','modules.statarray','modules.rolldice','modules.spells']
@@ -29,6 +30,12 @@ async def on_ready():
 @client.command()
 async def stop(ctx):
     await client.logout()
+
+@client.command()
+async def roll(ctx, arguments):
+    dice_roll_message = roll_dice(arguments)
+    await ctx.send(dice_roll_message)
+    
 
 
 if token != "":
