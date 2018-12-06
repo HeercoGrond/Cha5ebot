@@ -1,23 +1,35 @@
 {
-    "fireball": 
-        {
-            "Level": 3,
-            "Casting Time": "1 action",
-            "range": "150 feet",
-            "components": ["V", "S", "M"],
-            "duration": "instantaneous",
-            "classes": ["sorcerer", "wizard"],
-            "descripton": "A bright streak flashes from your pointing finger to a point you choose within range and then blossoms with a low roar into an explosion of flame. Each creature in a 20-foot-radius sphere centered on that point must make a Dexterity saving throw. A target takes 8d6 fire damage on a failed save, or half as much damage on a successful one. The fire spreads around corners. It ignites flammable objects in the area that aren’t being worn or carried."
-        },
+    "acid splash":
+    {
+        "level": "Cantrip",
+        "casting Time": "1 action",
+        "range": "60 feet",
+        "components": ["V", "S"],
+        "duration": "instantaneous",
+        "description": "You hurl a bubble of acid. Choose one creature within range, or choose two creatures within range that are within 5 feet of each other. A target must succeed on a Dexterity saving throw or take 1d6 acid damage.",
+        "damage": "1d6"
+    },
+    "fireball":
+    {
+        "level": 3,
+        "casting Time": "1 action",
+        "range": "150 feet",
+        "components": ["V", "S", "M"],
+        "duration": "instantaneous",
+        "classes": ["sorcerer", "wizard"],
+        "descripton": "A bright streak flashes from your pointing finger to a point you choose within range and then blossoms with a low roar into an explosion of flame. Each creature in a 20-foot-radius sphere centered on that point must make a Dexterity saving throw. A target takes 8d6 fire damage on a failed save, or half as much damage on a successful one. The fire spreads around corners. It ignites flammable objects in the area that aren’t being worn or carried.",
+        "damage": "8d6"
+    },
     "burning hands":
-        {
-            "level": 1,
-            "Casting Time": "1 action",
-            "range": "self (15-foot cone)",
-            "components": ["V", "S"],
-            "duration": "instantaneous",
-            "classes": ["sorcerer", "wizard"],
-            "descripton": "As you hold your hands with thumbs touching and fingers spread, a thin sheet of flames shoots forth from your outstretched fingertips. Each creature in a 15-foot cone must make a Dexterity saving throw. A creature takes 3d6 fire damage on a failed save, or half as much damage on a successful one. The fire ignites any flammable objects in the area that aren’t being worn or carried."
-        }
-    
+    {
+        "level": 1,
+        "casting Time": "1 action",
+        "range": "self (15-foot cone)",
+        "components": ["V", "S"],
+        "duration": "instantaneous",
+        "classes": ["sorcerer", "wizard"],
+        "descripton": "As you hold your hands with thumbs touching and fingers spread, a thin sheet of flames shoots forth from your outstretched fingertips. Each creature in a 15-foot cone must make a Dexterity saving throw. A creature takes 3d6 fire damage on a failed save, or half as much damage on a successful one. The fire ignites any flammable objects in the area that aren’t being worn or carried.",
+        "damage": "3d6"
+    }
+
 }
