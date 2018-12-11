@@ -33,10 +33,13 @@ async def stop(ctx):
 
 @client.command()
 async def roll(ctx, arguments):
-    dice_roll_message = roll_dice(arguments)
+    dice_roll_message = ""
+    regexCheck = re.search(r'[0-9]+d[0-9]+[+][0-9]+|[0-9]+d[0-9]+|d[0-9]+', arguments)
+    if regexCheck:
+        dice_roll_message = "Rolled " + arguments + " for: " + roll_dice(arguments)
+    else:
+        dice_roll_message = "That is not a valid die. Proper formatting is `>roll {x]d{y}+{z}`, `>roll {x]d{y}` or `>roll d{x}`"
     await ctx.send(dice_roll_message)
-    
-
 
 if token != "":
     if __name__ == "__main__":

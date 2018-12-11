@@ -25,8 +25,9 @@ def roll_dice(argument):
 
         outcome += bonus
 
-        message = "Rolled " + str(diceAmount) + " d" + str(diceEyes) + " with a bonus of " + str(bonus) + " for a total count of: " + str(outcome)
-        
+        # message = "Rolled " + str(diceAmount) + " d" + str(diceEyes) + " with a bonus of " + str(bonus) + " for a total count of: " + str(outcome)
+        message = str(outcome)
+
         if detailed: 
             message += " | Details on the rolls: " + outcomeList + " }"
     
@@ -45,7 +46,9 @@ def roll_dice(argument):
                     outcomeList += str(randomNumber) + " , "
                 outcome += randomNumber
 
-            message = "Rolled " + str(diceAmount) + " d" + str(diceEyes) + " for a total count of: " + str(outcome)
+            # message = "Rolled " + str(diceAmount) + " d" + str(diceEyes) + " for a total count of: " + str(outcome)
+            message = str(outcome)
+
             if detailed: 
                 message += " | Details on the rolls: " + outcomeList + " }"
         else:
@@ -55,7 +58,9 @@ def roll_dice(argument):
                 argsList = matchedString.split('d')
                 diceEyes = int(argsList[1])
                 outcome = randint(1, diceEyes)
-                message = "Rolled a d" + str(diceEyes) + " for: " + str(outcome)
+                # message = "Rolled a d" + str(diceEyes) + " for: " + str(outcome)
+                message = str(outcome)
+            
             else:
                 message = "That is not a valid die. Proper formatting is `>roll {x]d{y}+{z}`, `>roll {x]d{y}` or `>roll d{x}`"
     

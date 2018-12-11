@@ -26,7 +26,7 @@ class Spells:
                 if spell["name"].lower() == arg.lower():
                     dmg = spell["damage"]
                     message = roll_dice(dmg)
-                    await ctx.send(message)
+                    await ctx.send("For " + message + " damage!")
 
 def setup(client):
     client.add_cog(Spells(client))
