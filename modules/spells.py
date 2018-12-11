@@ -14,7 +14,7 @@ class Spells:
     async def spell(self, ctx, *, arg):
         with open('./modules/libraries/spells.json') as f:
             spell_data = json.load(f)
-        await ctx.send(spell_data[arg])
+            await ctx.send(spell_data[arg])
 
     @commands.command()
     async def cast(self, ctx, *, arg):
