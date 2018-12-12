@@ -35,6 +35,23 @@ async def stop(ctx):
 async def roll(ctx, arguments):
     dice_roll_message = roll_dice(arguments)
     await ctx.send(dice_roll_message)
+
+@client.command()
+async def role(ctx, arguments):
+    # role = discord.utils.get(ctx.guild.roles, name="DM")
+    # user = ctx.message.author
+    # await user.add_roles(role)
+    user = ctx.message.author
+    if (arguments.lower() == "dm"):
+        role = discord.utils.get(ctx.guild.roles, name="DM")
+        await user.add_roles(role)
+        await ctx.send("You now have the role of DM")
+    elif (arguments.lower() == "player"):
+        role = discord.utils.get(ctx.guild.roles, name="Player")
+        await user.add_roles(role)
+        await ctx.send("You now have the role of Player")
+    else:
+        await ctx.send("That is not a role you can choose, please pick either 'Player' or 'DM'")
     
 
 
