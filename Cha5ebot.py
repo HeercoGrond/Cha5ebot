@@ -22,6 +22,8 @@ client = commands.Bot(command_prefix=prefix)
 
 @client.event
 async def on_ready():
+    game = discord.Game("Dungeons & Dragons")
+    await client.change_presence(status=discord.Status.idle, activity=game)
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)
@@ -37,13 +39,12 @@ async def roll(ctx, arguments):
     await ctx.send(dice_roll_message)
 
 @client.command()
-async def role(ctx, arguments):
-    # role = discord.utils.get(ctx.guild.roles, name="DM")
-    # user = ctx.message.author
-    # await user.add_roles(role)
+async def role(self, ctx, arguments):
     user = ctx.message.author
     if (arguments.lower() == "dm"):
         role = discord.utils.get(ctx.guild.roles, name="DM")
+        # if discord.utils.get(ctx.guild.roles, name="Player") in user.roles:
+        #     await user.remove_roles(discord.utils.get(ctx.guild.roles, name="Player"))
         await user.add_roles(role)
         await ctx.send("You now have the role of DM")
     elif (arguments.lower() == "player"):
