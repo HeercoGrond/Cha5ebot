@@ -39,22 +39,23 @@ async def roll(ctx, arguments):
     await ctx.send(dice_roll_message)
 
 @client.command()
-async def role(self, ctx, arguments):
+async def role(ctx, arguments):
     user = ctx.message.author
     if (arguments.lower() == "dm"):
         role = discord.utils.get(ctx.guild.roles, name="DM")
-        # if discord.utils.get(ctx.guild.roles, name="Player") in user.roles:
-        #     await user.remove_roles(discord.utils.get(ctx.guild.roles, name="Player"))
+        if discord.utils.get(ctx.guild.roles, name="Player") in user.roles:
+            await user.remove_roles(discord.utils.get(ctx.guild.roles, name="Player"))
         await user.add_roles(role)
         await ctx.send("You now have the role of DM")
     elif (arguments.lower() == "player"):
         role = discord.utils.get(ctx.guild.roles, name="Player")
+        if discord.utils.get(ctx.guild.roles, name="DM") in user.roles:
+            await user.remove_roles(discord.utils.get(ctx.guild.roles, name="DM"))
         await user.add_roles(role)
         await ctx.send("You now have the role of Player")
     else:
         await ctx.send("That is not a role you can choose, please pick either 'Player' or 'DM'")
     
-
 
 if token != "":
     if __name__ == "__main__":
