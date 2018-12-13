@@ -43,16 +43,18 @@ async def role(ctx, arguments):
     user = ctx.message.author
     if (arguments.lower() == "dm"):
         role = discord.utils.get(ctx.guild.roles, name="DM")
-        if discord.utils.get(ctx.guild.roles, name="Player") in user.roles:
-            await user.remove_roles(discord.utils.get(ctx.guild.roles, name="Player"))
         await user.add_roles(role)
         await ctx.send("You now have the role of DM")
+        if discord.utils.get(ctx.guild.roles, name="Player") in user.roles:
+            await user.remove_roles(discord.utils.get(ctx.guild.roles, name="Player"))
+            await ctx.send("Also removed your role of Player")
     elif (arguments.lower() == "player"):
         role = discord.utils.get(ctx.guild.roles, name="Player")
-        if discord.utils.get(ctx.guild.roles, name="DM") in user.roles:
-            await user.remove_roles(discord.utils.get(ctx.guild.roles, name="DM"))
         await user.add_roles(role)
         await ctx.send("You now have the role of Player")
+        if discord.utils.get(ctx.guild.roles, name="DM") in user.roles:
+            await user.remove_roles(discord.utils.get(ctx.guild.roles, name="DM"))
+            await ctx.send("Also removed your role of DM")
     else:
         await ctx.send("That is not a role you can choose, please pick either 'Player' or 'DM'")
     
