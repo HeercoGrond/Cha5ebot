@@ -13,7 +13,7 @@ class Spells:
 
     @commands.command()
     async def spell(self, ctx, *, arg):
-        if discord.utils.get(ctx.guild.roles, name=self.client.dm_role) in ctx.message.author.roles:
+        if discord.utils.get(ctx.guild.roles, name="DM") in ctx.message.author.roles:
             with open('./modules/libraries/spells.json') as f:
                 spell_data = json.load(f)
                 for spell in spell_data:
