@@ -15,76 +15,105 @@ class CharacterSheetCog:
         print("loaded cog")
 
     @commands.command()
-    async def charsheet(self, ctx, argument, arguments=""):
+    async def charsheet(self, ctx, *args):
         if ctx.guild != None:
             # Variables
             currentGuildPath =  "/guilds/" + str(ctx.guild.id)
             currentUserPath = currentGuildPath + "/user/" + str(ctx.author.id)
-            filename = arguments.replace(argument, "")
-            filepath = "." + currentUserPath + "/" + filename + ".json"
+            argumentCount = len(args)
 
-            if argument == "make":
-                if not os.path.exists("." + currentGuildPath):
-                    os.makedirs("." + currentGuildPath)
-                    print("This path doesn't exist")
+            print(args)
 
-                if not os.path.exists("." + currentUserPath):
-                    os.makedirs("." + currentUserPath)
-                    print("Created charsheet folder for user " + str(ctx.author.id))
+            if(argumentCount == 0):
+                await ctx.send("No arguments were provided, please make sure to provide an argument to the command.")
 
-                if not os.path.exists("." + currentUserPath + "/" + filename + ".json"):
-                    with open("." + currentUserPath + "/" + filename + ".json", 'w') as fp:
-                        data = self.make_charsheet(filename, ctx.guild.id, ctx.author.id)
-                        json.dump(data, fp, indent=4, sort_keys=True)
-                        await ctx.send("Created charactersheet with the name: " + data["name"])
-                else:
-                    await ctx.send("A charactersheet with the name '" + filename + "' was already found.")
+            else:
+                argument = args[0]
 
-            elif argument == "rename":
-                args = filename.split()
-
-                if len(args) != 2:
-                    await ctx.send("There were either less or more than 2 arguments into the command. Proper usage is `>charactersheet rename {x} {y}` where {x} is the existing sheetname and {y} is the new sheetname.")
-
-                else: 
-                    renamePath = "." + currentUserPath + "/" + args[0] + ".json"
-                    newPath = "." + currentUserPath + "/" + args[1] + ".json"
-
-                    if os.path.exists(renamePath):
-                        with open(renamePath, 'w') as file:
-                            data = json.load(file)
-                            data["name"] = args[1]
-                            json.dump(data, fp, indent=4, sort_keys=True)
-                            os.rename(renamePath, newPath) 
+                if argument == "make":
+                    if argumentCount != 2:
+                        await ctx.send("There was either less or more than 1 argument into the command. Proper usage is `>charactersheet make {x}` where {x} is the new character sheet's name. This name can be changed later.")
                     
                     else:
-                        await ctx.send("The sheet requested doesn't exist.")
+                        filename = args[1]
+                        if not os.path.exists("." + currentGuildPath):
+                            os.makedirs("." + currentGuildPath)
+                            print("This path doesn't exist")
 
-            elif argument == "delete":
-                path = "." + currentUserPath + "/" + filename + ".json"
-                if os.path.exists(path):
-                    os.remove(path)
-                    await ctx.send("Succesfully deleted charactersheet '" + filename + "'.")
-                else:
-                    await ctx.send("The charactersheet you are trying to delete doesn't seem to exist.")
+                        if not os.path.exists("." + currentUserPath):
+                            os.makedirs("." + currentUserPath)
+                            print("Created charsheet folder for user " + str(ctx.author.id))
 
-            elif argument == "list":
-                with os.scandir("." + currentUserPath + "/") as sheets:
-                    
-                    description = "" 
-                    for file in sheets:
-                        description += file.name.replace(".json", "") + "\n"
+                        if not os.path.exists("." + currentUserPath + "/" + filename + ".json"):
+                            with open("." + currentUserPath + "/" + filename + ".json", 'w') as fp:
+                                data = self.make_charsheet(filename, ctx.guild.id, ctx.author.id)
+                                json.dump(data, fp, indent=4, sort_keys=True)
+                                await ctx.send("Created charactersheet with the name: " + data["name"])
+                        else:
+                            await ctx.send("A charactersheet with the name '" + filename + "' was already found.")
 
-                    embed_totalsheets = discord.Embed(title="Your sheets:", description=description)
-                    await ctx.send(embed=embed_totalsheets)
+                elif argument == "rename":
+                    if argumentCount != 3:
+                        await ctx.send("There were either less or more than 2 arguments into the command. Proper usage is `>charactersheet rename {x} {y}` where {x} is the existing sheetname and {y} is the new sheetname.")
 
-            elif arguments == "":
-                with open("." + currentUserPath + "/" + argument + ".json") as file:
-                    data = json.load(file)
+                    else: 
+                        renamePath = "." + currentUserPath + "/" + args[1] + ".json"
+                        newPath = "." + currentUserPath + "/" + args[2] + ".json"
 
-                    embed_sheet = discord.Embed(title=data["name"])
+                        if os.path.exists(renamePath):
+                            with open(renamePath) as file:
+                                data = json.load(file)
+                                data["name"] = args[2]
+                                json.dump(data, fp, indent=4, sort_keys=True)
+                                os.rename(renamePath, newPath) 
+                        
+                        else:
+                            await ctx.send("The sheet requested doesn't exist.")
 
-                    await ctx.send("Found charactersheet with the name: " + data["name"])
+                elif argument == "delete":
+                    if argumentCount != 2:
+                        await ctx.send("There was either less or more than 1 argument into the command. Proper usage is `>charactersheet delete {x}` where {x} is the character sheet's name that will be deleted.")
+
+                    else:
+                        path = "." + currentUserPath + "/" + filename + ".json"
+                        if os.path.exists(path):
+                            os.remove(path)
+                            await ctx.send("Succesfully deleted charactersheet '" + filename + "'.")
+                        else:
+                            await ctx.send("The charactersheet you are trying to delete doesn't seem to exist.")
+
+                elif argument == "list":
+                    userpath = ""
+                    username = "" 
+                    if argumentCount == 2:
+                        userid = args[1].replace('<@', "").replace('>', "")
+                        userpath = currentGuildPath + "/user/" + userid
+
+                        user = ctx.guild.get_member(int(userid))
+                        username = user.display_name
+                    else:
+                        userpath = currentUserPath
+                        username = ctx.author.display_name 
+
+                    with os.scandir("." + userpath + "/") as sheets:
+                        description = "" 
+                        for file in sheets:
+                            description += file.name.replace(".json", "") + "\n"
+
+                        embed_totalsheets = discord.Embed(title="%s's sheets:" % username, description=description)
+                        await ctx.send(embed=embed_totalsheets)
+
+                elif argumentCount != 0:
+                    filepath = "." + currentUserPath + "/" + argument + ".json"
+                    if os.path.exists(filepath):
+                        with open("." + currentUserPath + "/" + argument + ".json") as file:
+                            data = json.load(file)
+
+                            embed_sheet = discord.Embed(title=data["name"])
+
+                            await ctx.send("Found charactersheet with the name: " + data["name"])
+                    else:
+                        await ctx.send("There is not a charactersheet with such a name. If you wish to view all your characters sheets, please use `>charsheet list`.")
 
     def make_charsheet(self, sheetname, guild_id, user_id):
         charactersheet = {}
