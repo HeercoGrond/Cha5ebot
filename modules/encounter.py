@@ -32,7 +32,6 @@ class Encounter:
 
                 else:
                     filename = args[1]
-                    print(type(filename))    
                     if not os.path.exists(currentGuildPath):
                         os.makedirs(currentGuildPath)
                         print("Created guild path.")
@@ -45,7 +44,7 @@ class Encounter:
                         with open(currentEncounterPath + "/" + filename + ".json", 'w') as fp:
                             data = self.make_encounter(filename)
                             json.dump(data, fp, indent=4, sort_keys=True)
-                            await ctx.send("Created an encounter with the name: " + filename)
+                            await ctx.send("Created an encounter with the name: " + data["name"])
 
                     else:
                         await ctx.send("An encounter with the name '" + filename + "' was already found.")
@@ -55,6 +54,7 @@ class Encounter:
                     await ctx.send("There was either less or more than 1 argument into the command. Proper usage is `>encounter delete {x}` where {x} is the encounter's name that will be deleted.")
 
                 else:
+                    filename = args[1]
                     path = currentEncounterPath + "/" + filename + ".json"
                     if os.path.exists(path):
                         os.remove(path)
@@ -75,9 +75,9 @@ class Encounter:
     def make_encounter(self, enc_name):
         encounter = {}
 
-        encounter["name"] = enc_name,
-        encounter["description"] = "",
-        encounter["participants"] = {},
+        encounter["name"] = enc_name
+        encounter["description"] = ""
+        encounter["participants"] = {}
         encounter["map"] = ""
 
         return encounter
