@@ -59,9 +59,9 @@ class Encounter:
                         path = currentEncounterPath + "/" + filename + ".json"
                         if os.path.exists(path):
                             os.remove(path)
-                            await ctx.send("Succesfully deleted charactersheet '" + filename + "'.")
+                            await ctx.send("Succesfully deleted encounter '" + filename + "'.")
                         else:
-                            await ctx.send("The charactersheet you are trying to delete doesn't seem to exist.")
+                            await ctx.send("The encounter you are trying to delete doesn't seem to exist.")
 
                 elif argument == "list":
                     with os.scandir(currentEncounterPath + "/") as encounters:
@@ -71,6 +71,30 @@ class Encounter:
 
                         embed_totalEncounters = discord.Embed(title="Currently active encounters:", description=description)
                         await ctx.send(embed=embed_totalEncounters)
+
+                elif os.path.exists(currentEncounterPath + "/" + argument + ".json"):
+                    if args[1] == "add":
+                        with open("./modules/libraries/monsters.json") as f:
+                            monster_data = json.load(f)
+                            for monster in monster_data:
+                                if monster["title"].lower() in args:
+                                    #something to add monster data to .json file
+                                    with open(currentEncounterPath + "/" + argument + ".json", "r+") as f:
+                                        encounter_file = json.load(f)
+
+                                        encounter_file["participants"].append(monster)
+
+                                        f.seek(0)
+                                        json.dump(encounter_file, f, indent=4)
+                                        f.truncate()
+
+                                    await ctx.send("Added " + monster["title"] + " to the " + argument + " encounter.")
+
+                    # elif args[1] == "remove":
+
+                    # elif args[1] == "list":
+
+
         else:
             await ctx.send("You don't have permission to use that command.")
 
@@ -79,10 +103,11 @@ class Encounter:
 
         encounter["name"] = enc_name
         encounter["description"] = ""
-        encounter["participants"] = {}
+        encounter["participants"] = []
         encounter["map"] = ""
 
         return encounter
+
 
 
 
