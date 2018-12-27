@@ -111,7 +111,20 @@ class CharacterSheetCog:
 
                             embed_sheet = discord.Embed(title=data["name"])
 
-                            await ctx.send("Found charactersheet with the name: " + data["name"])
+                            attributes = ""
+                            attributes += "**Strength:**\t" + str(data["attributes"]["strength"]) + "\n"
+                            attributes += "**Dexterity:**\t" + str(data["attributes"]["dexterity"]) + "\n"
+                            attributes += "**Constitution:**\t" + str(data["attributes"]["constitution"]) + "\n"
+                            attributes += "**Intelligence:**\t" + str(data["attributes"]["intelligence"]) + "\n"
+                            attributes += "**Wisdom:**\t" + str(data["attributes"]["wisdom"]) + "\n"
+                            attributes += "**Charisma:**\t" + str(data["attributes"]["charisma"]) + "\n"
+
+
+                            embed_sheet.add_field(name="Attributes", value=attributes)
+
+                            
+
+                            await ctx.send(embed=embed_sheet)
                     else:
                         await ctx.send("There is not a charactersheet with such a name. If you wish to view all your characters sheets, please use `>charsheet list`.")
 
@@ -136,12 +149,12 @@ class CharacterSheetCog:
         }
 
         charactersheet["saving_throws"] = {
-            "strength": 0,
-            "dexterity": 0,
-            "constitution": 0,
-            "intelligence": 0,
-            "wisdom": 0,
-            "charisma": 0
+            "strength": False,
+            "dexterity": False,
+            "constitution": False,
+            "intelligence": False,
+            "wisdom": False,
+            "charisma": False
         }
 
         charactersheet["skills"] = {
