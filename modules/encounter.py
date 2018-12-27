@@ -94,10 +94,9 @@ class Encounter:
                                 if monster.lower() in args:
                                     encounter_data["participants"].remove(monster)
 
-                                    with open(currentEncounterPath + "/" + argument + ".json", "w") as f:
-                                        encounter_data = json.load(f)
-                                        json.dump(encounter_data, f)
-                                    await ctx.send("Removed one " + monster + " from the " + argument + " encounter.")
+                                    with open(currentEncounterPath + "/" + argument + ".json", "w") as fw:
+                                        json.dump(encounter_data, fw, indent=4)
+                                        await ctx.send("Removed one " + monster + " from the " + argument + " encounter.")
 
                     elif args[1] == "list":
                         with open(currentEncounterPath + "/" + argument + ".json", "r") as f:
