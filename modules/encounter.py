@@ -96,7 +96,8 @@ class Encounter:
 
                                     with open(currentEncounterPath + "/" + argument + ".json", "w") as fw:
                                         json.dump(encounter_data, fw, indent=4)
-                                        await ctx.send("Removed one " + monster + " from the " + argument + " encounter.")
+                                        await ctx.send("Removed one " + monster + " from the " + argument + " encounter.") 
+                                        break
 
                     elif args[1] == "list":
                         with open(currentEncounterPath + "/" + argument + ".json", "r") as f:
