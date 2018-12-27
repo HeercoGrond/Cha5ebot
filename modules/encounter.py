@@ -19,8 +19,6 @@ class Encounter:
                 currentEncounterPath = currentGuildPath + "/encounters"
                 argumentCount = len(args)
 
-            print(args)
-
             if argumentCount == 0:
                 await ctx.send("No arguments were provided, please make sure to provide an argument to the command.")
 
@@ -78,22 +76,38 @@ class Encounter:
                             monster_data = json.load(f)
                             for monster in monster_data:
                                 if monster["title"].lower() in args:
-                                    #something to add monster data to .json file
                                     with open(currentEncounterPath + "/" + argument + ".json", "r+") as f:
                                         encounter_file = json.load(f)
 
-                                        encounter_file["participants"].append(monster)
+                                        encounter_file["participants"].append(monster["title"])
 
                                         f.seek(0)
                                         json.dump(encounter_file, f, indent=4)
                                         f.truncate()
 
-                                    await ctx.send("Added " + monster["title"] + " to the " + argument + " encounter.")
+                                    await ctx.send("Added one " + monster["title"] + " to the " + argument + " encounter.")
 
-                    # elif args[1] == "remove":
+                    elif args[1] == "remove":
+                        with open(currentEncounterPath + "/" + argument + ".json") as f:
+                            encounter_data = json.load(f)
+                            for monster in encounter_data["participants"]:
+                                if monster.lower() in args:
+                                    encounter_data["participants"].remove(monster)
 
-                    # elif args[1] == "list":
+                                    with open(currentEncounterPath + "/" + argument + ".json", "w") as f:
+                                        encounter_data = json.load(f)
+                                        json.dump(encounter_data, f)
+                                    await ctx.send("Removed one " + monster + " from the " + argument + " encounter.")
 
+                    elif args[1] == "list":
+                        with open(currentEncounterPath + "/" + argument + ".json", "r") as f:
+                            encounter_data = json.load(f)
+                            description = "" 
+                            for monster in encounter_data["participants"]:
+                                description += monster + "\n"
+
+                            embed_totalMonsters = discord.Embed(title="Current monsters in encounter: " + args[0], description=description)
+                            await ctx.send(embed=embed_totalMonsters)
 
         else:
             await ctx.send("You don't have permission to use that command.")
