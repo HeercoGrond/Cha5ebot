@@ -42,6 +42,10 @@ class Spells:
     @commands.command()
     async def cast(self, ctx, *, arg):
         await ctx.send("Casting " + arg)
+        hit = roll_dice("d20")
+        await ctx.send("Rolled " + hit + " + spellcasting mod to hit!")
+        # if hit + spellcasting mod <= enemy AC, then continue casting. Else half damage or miss.
+
         with open('./modules/libraries/spells.json') as f:
             spells = json.load(f)
 
