@@ -22,6 +22,8 @@ client = commands.Bot(command_prefix=prefix)
 
 @client.event
 async def on_ready():
+    game = discord.Game("Dungeons & Dragons")
+    await client.change_presence(status=discord.Status.idle, activity=game)
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)
@@ -35,8 +37,27 @@ async def stop(ctx):
 async def roll(ctx, arguments):
     dice_roll_message = roll_dice(arguments)
     await ctx.send(dice_roll_message)
-    
 
+@client.command()
+async def role(ctx, arguments):
+    user = ctx.message.author
+    if (arguments.lower() == "dm"):
+        role = discord.utils.get(ctx.guild.roles, name="DM")
+        await user.add_roles(role)
+        await ctx.send("You now have the role of DM")
+        if discord.utils.get(ctx.guild.roles, name="Player") in user.roles:
+            await user.remove_roles(discord.utils.get(ctx.guild.roles, name="Player"))
+            await ctx.send("Also removed your role of Player")
+    elif (arguments.lower() == "player"):
+        role = discord.utils.get(ctx.guild.roles, name="Player")
+        await user.add_roles(role)
+        await ctx.send("You now have the role of Player")
+        if discord.utils.get(ctx.guild.roles, name="DM") in user.roles:
+            await user.remove_roles(discord.utils.get(ctx.guild.roles, name="DM"))
+            await ctx.send("Also removed your role of DM")
+    else:
+        await ctx.send("That is not a role you can choose, please pick either 'Player' or 'DM'")
+    
 
 if token != "":
     if __name__ == "__main__":
