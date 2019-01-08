@@ -33,8 +33,8 @@ async def stop(ctx):
 
 @client.command()
 async def roll(ctx, arguments):
-    dice_roll_message = roll_dice(arguments)
-    await ctx.send(dice_roll_message)
+    dice_roll = roll_dice(arguments)
+    await ctx.send(dice_roll[1])
     
 
 

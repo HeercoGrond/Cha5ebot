@@ -5,7 +5,7 @@ def roll_dice(argument):
     """Rolls dice based on a {x}d{y}+{z} pattern where the only necessary argument is at the very least a d{y}.
     This will return a message that can be sent.
     """
-    message = ""
+    result = [0, ""]
     detailed = "detailed" in argument
     firstcheck = re.search(r'[0-9]+d[0-9]+[+][0-9]+', argument)
     if firstcheck: 
@@ -29,6 +29,9 @@ def roll_dice(argument):
         
         if detailed: 
             message += " | Details on the rolls: " + outcomeList + " }"
+
+        result[0] = outcome
+        result[1] = message
     
     else:
         secondCheck = re.search(r'[0-9]+d[0-9]+', argument)
@@ -48,6 +51,10 @@ def roll_dice(argument):
             message = "Rolled " + str(diceAmount) + " d" + str(diceEyes) + " for a total count of: " + str(outcome)
             if detailed: 
                 message += " | Details on the rolls: " + outcomeList + " }"
+
+            result[0] = outcome
+            result[1] = message
+
         else:
             tertiaryCheck = re.search(r'd[0-9]+', argument)
             if tertiaryCheck:
@@ -56,9 +63,12 @@ def roll_dice(argument):
                 diceEyes = int(argsList[1])
                 outcome = randint(1, diceEyes)
                 message = "Rolled a d" + str(diceEyes) + " for: " + str(outcome)
+                result[0] = outcome 
+                result[1] = message
             else:
                 message = "That is not a valid die. Proper formatting is `>roll {x]d{y}+{z}`, `>roll {x]d{y}` or `>roll d{x}`"
-    
-    return message
+                result[1] = message
+
+    return result
 
             
