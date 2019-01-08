@@ -18,7 +18,14 @@ class Custom:
     async def sneakattack(self, ctx):
         diceamount = str(randint(3, 100)) + "d6"
         totaldmg = roll_dice(diceamount)
-        await ctx.send("SNEAK ATTACK!\nEthearia rollt " + diceamount + " voor " + totaldmg + " damage.")
+        await ctx.send("SNEAK ATTACK!\nEthearia rollt " + diceamount + " voor " + str(totaldmg[0]) + " damage.")
+
+    @commands.command()
+    async def fireball(self, ctx):
+        enemies = randint(3, 65)
+        leach = 12
+        health = enemies * leach
+        await ctx.send("FIREBALL!\nFreyja gooit een fireball op " + str(enemies) + " enemies en krijgt " + str(health) + " temporary hitpoints.")
 
 def setup(client):
     client.add_cog(Custom(client))
