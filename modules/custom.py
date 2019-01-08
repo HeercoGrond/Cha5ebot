@@ -27,5 +27,19 @@ class Custom:
         health = enemies * leach
         await ctx.send("FIREBALL!\nFreyja gooit een fireball op " + str(enemies) + " enemies en krijgt " + str(health) + " temporary hitpoints.")
 
+    @commands.command()
+    async def disappoint(self, ctx):
+        disappointment = roll_dice("d20")
+        await ctx.send(ctx.author.name + " is " + str(disappointment[0]) + " disappoint.\nShame on you, shame on your mother, shame on your cow.")
+
+    @commands.command()
+    async def narcian(self, ctx):
+        await ctx.send("ICE KNIFE")
+
+    @commands.command()
+    async def throw(self, ctx, arg):
+        distance = randint(1, 150)
+        await ctx.send(ctx.author.name + " throws " + arg + " " + str(distance) + " feet away.\nYEEEEEEEEEEEEET!")
+
 def setup(client):
     client.add_cog(Custom(client))
