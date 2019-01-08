@@ -16,9 +16,9 @@ class Custom:
 
     @commands.command()
     async def sneakattack(self, ctx):
-        diceamount = randint(3, 100)
-        totaldmg = roll_dice(str(diceamount) + "d6")
-        await ctx.send(totaldmg)
+        diceamount = str(randint(3, 100)) + "d6"
+        totaldmg = roll_dice(diceamount)
+        await ctx.send("SNEAK ATTACK!" + /n + "Ethearia rollt " + diceamount + " voor " + totaldmg + " damage.")
 
 def setup(client):
     client.add_cog(Custom(client))
