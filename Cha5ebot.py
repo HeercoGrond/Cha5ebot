@@ -15,6 +15,7 @@ config.read(currentPath + "/config/bot.ini")
 token = config['DEFAULT']['token']
 modules = config['MODULES']['active']
 prefix = config['DEFAULT']['prefix']
+admin_id = int(config['DEFAULT']['admin_id'])
 
 client = commands.Bot(command_prefix=prefix)
 # extensions = ['charactersheet','statarray','rolldice']
@@ -31,7 +32,13 @@ async def on_ready():
 
 @client.command()
 async def stop(ctx):
-    await client.logout()
+    if admin_id == ctx.author.id:
+        print("Shutting down bot because of admin command.") 
+        await client.logout()
+
+    elif admin_id == None: 
+        print("Shutting down bot because of command.")
+        await client.logout()
 
 @client.command()
 async def roll(ctx, arguments):
