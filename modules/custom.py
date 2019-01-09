@@ -14,7 +14,7 @@ class Custom:
         print("loaded cog")
     
     @commands.command()
-    async def lick(self, ctx, *, args):
+    async def lik(self, ctx, *, args):
         await ctx.send("Harkh likt " + args)
 
     @commands.command()
@@ -88,6 +88,13 @@ class Custom:
             animal = random.choice(polymorph)
             await ctx.send("Leander cast polymorph en verandert in een %s." % (animal))
 
+    @commands.command()
+    async def metabird(self, ctx):
+        await ctx.send("KAH KAH _poof_ It gone")
+
+    @commands.command()
+    async def watdoejehier(self, ctx):
+        await ctx.send("HEY, WAT DOE JE HIER?!")
 
 def setup(client):
     client.add_cog(Custom(client))
