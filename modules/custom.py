@@ -33,7 +33,7 @@ class Custom:
     @commands.command()
     async def disappoint(self, ctx):
         disappointment = roll_dice("d20")
-        await ctx.send(ctx.author.name + " is %s disappoint.\nShame on you, shame on your mother, shame on your cow." % (disappointment[0]))
+        await ctx.send(ctx.author.display_name + " is %s disappoint.\nShame on you, shame on your mother, shame on your cow." % (disappointment[0]))
 
     @commands.command()
     async def narcian(self, ctx):
@@ -42,7 +42,7 @@ class Custom:
     @commands.command()
     async def throw(self, ctx, arg):
         distance = randint(1, 150)
-        await ctx.send(ctx.author.name + " throws %s %s feet away.\nYEEEEEEEEEEEEET!" % (arg, distance))
+        await ctx.send(ctx.author.display_name + " throws %s %s feet away.\nYEEEEEEEEEEEEET!" % (arg, distance))
 
     @commands.command()
     async def toot(self, ctx):
