@@ -3,10 +3,11 @@ import discord
 import json
 import os
 
-class Encounter:
+class Encounter(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    @commands.Cog.listener()
     async def on_ready(self):
         print("loaded cog")
     

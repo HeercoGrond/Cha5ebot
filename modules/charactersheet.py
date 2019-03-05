@@ -5,10 +5,11 @@ import inspect
 
 currentPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))[:-8] 
 
-class CharacterSheet:
+class CharacterSheet(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    @commands.Cog.listener()
     async def on_ready(self):
         print("loaded cog")
 

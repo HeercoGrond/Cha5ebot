@@ -6,10 +6,11 @@ import datetime
 import json
 from modules.libraries.roll import roll_dice
 
-class Custom:
+class Custom(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    @commands.Cog.listener()
     async def on_ready(self):
         print("loaded cog")
     
