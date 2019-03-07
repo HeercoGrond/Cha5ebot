@@ -1,0 +1,7 @@
+[DEFAULT]
+token = <your token>
+prefix = >
+admin_id = <your admin id>
+
+[MODULES]
+active = charactersheet, statarray, spells

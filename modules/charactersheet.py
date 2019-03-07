@@ -7,10 +7,11 @@ import json
 
 currentPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))[:-8] 
 
-class CharacterSheetCog:
+class CharacterSheet(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    @commands.Cog.listener()
     async def on_ready(self):
         print("loaded cog")
 
@@ -187,4 +188,4 @@ class CharacterSheetCog:
 
 
 def setup(client):
-    client.add_cog(CharacterSheetCog(client))
+    client.add_cog(CharacterSheet(client))
