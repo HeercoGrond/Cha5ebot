@@ -7,7 +7,6 @@ import os
 import configparser
 from modules.libraries.roll import roll_dice
 
-client = commands.Bot(command_prefix='>')
 extensions = ['modules.charactersheet','modules.statarray','modules.rolldice','modules.spells']
 currentPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 config = configparser.ConfigParser()
