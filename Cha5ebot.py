@@ -1,107 +1,81 @@
 import discord
+from discord.ext import commands
 import asyncio
-from random import randint
 import re
 import inspect
 import os
 import configparser
+from modules.libraries.roll import roll_dice
 
-client = discord.Client()
+extensions = ['modules.charactersheet','modules.statarray','modules.rolldice','modules.spells']
 currentPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+config = configparser.ConfigParser()
+config.read(currentPath + "/config/bot.ini")
+token = config['DEFAULT']['token']
+modules = config['MODULES']['active']
+prefix = config['DEFAULT']['prefix']
+admin_id = int(config['DEFAULT']['admin_id'])
+
+client = commands.Bot(command_prefix=prefix)
+# extensions = ['charactersheet','statarray','rolldice']
+
 
 @client.event
 async def on_ready():
+    game = discord.Game("Dungeons & Dragons")
+    await client.change_presence(status=discord.Status.idle, activity=game)
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)
     print('------')
 
-@client.event
-async def on_message(message):
-    if message.author.id != client.user.id:
-        if "!statarray" in message.content:
-            stats = []
-            for x in range(6):
-                currentStat = []
-                for y in range(4):
-                    currentStat.append(randint(1, 6))
+@client.command()
+async def stop(ctx):
+    if admin_id == ctx.author.id:
+        print("Shutting down bot because of admin command.") 
+        await client.logout()
 
-                lowestDie = min(currentStat)
-                currentStat.remove(lowestDie)
-                stats.append(sum(currentStat))
+    elif admin_id == None: 
+        print("Shutting down bot because of command.")
+        await client.logout()
 
-            statsString = ' '.join(str(e) for e in stats)
-            await client.send_message(message.channel, "Current array for assignable stats is: " + statsString)
+@client.command()
+async def roll(ctx, arguments):
+    dice_roll = roll_dice(arguments)
+    await ctx.send(dice_roll[1])
+    
 
-        if message.content.startswith("!roll"):
-            detailed = "detailed" in message.content
-            firstcheck = re.search(r'[0-9]+d[0-9]+[+][0-9]+', message.content)
-            if firstcheck: 
-                outcomeList = "{ "
-                matchString = str(firstcheck.group())
-                argsList = matchString.split('d')
-                splitArg = argsList[1].split('+')
-                diceAmount = int(argsList[0])
-                diceEyes = int(splitArg[0])
-                bonus = int(splitArg[1])
-                outcome = 0
-                for x in range(1, diceAmount + 1):
-                    randomNumber = randint(1, diceEyes)
-                    if detailed:
-                        outcomeList += str(randomNumber) + " , "
-                    outcome += randomNumber
-
-                outcome += bonus
-                await client.send_message(message.channel, "Rolled " + str(diceAmount) + " d" + str(diceEyes) + " with a bonus of " + str(bonus) + " for a total count of: " + str(outcome))
-                if detailed:
-                        await client.send_message(message.channel, "Details on the rolls: " + outcomeList + " }")
-                
-            else:
-                filteredString = re.search(r'[0-9]+d[0-9]+', message.content)
-                if filteredString:
-                    outcomeList = "{ "
-                    matchedString = str(filteredString.group())
-                    argsList = matchedString.split('d')
-                    diceAmount = int(argsList[0])
-                    diceEyes = int(argsList[1])
-                    outcome = 0
-                    for x in range(1, diceAmount + 1):
-                        randomNumber = randint(1, diceEyes)
-                        if detailed:
-                            outcomeList += str(randomNumber) + " , "
-                        outcome += randomNumber
-
-                    await client.send_message(message.channel, "Rolled " + str(diceAmount) + " d" + str(diceEyes) + " for a total count of: " + str(outcome))
-                    if detailed:
-                        await client.send_message(message.channel, "Details on the rolls: " + outcomeList + " }")
-                else:
-                    secondaryFilter = re.search(r'd[0-9]+', message.content)
-                    if secondaryFilter:
-                        matchedString = str(secondaryFilter.group())
-                        argsList = matchedString.split('d')
-                        diceEyes = int(argsList[1])
-                        outcome = randint(1, diceEyes)
-                        await client.send_message(message.channel, "Rolled a d" + str(diceEyes) + " for: " + str(outcome))
-                    else:
-                        await client.send_message(message.channel, "That is not a valid die. Proper formatting is `!roll {x]d{y}` or `!roll d{x}`")
-
-        if message.content.startswith("!charsheet"):
-            if message.server != None:
-                currentServerPath = currentPath + "/servers/" + message.server.id
-                print(currentServerPath)
-
-                if not os.path.exists(currentServerPath):
-                    os.makedirs(currentServerPath)
-
-                currentUserPath = currentServerPath + "/user/" + message.author.id
-                if not os.path.exists(currentUserPath):
-                    os.makedirs(currentUserPath)
-                    print("Created charsheet folder for user " + message.author.id)
-            
-
-config = configparser.ConfigParser()
-config.read(currentPath + "/config/bot.ini")
-token = config['DEFAULT']['token']
+# @client.command()
+# async def role(ctx, arguments):
+#     user = ctx.message.author
+#     if (arguments.lower() == "dm"):
+#         role = discord.utils.get(ctx.guild.roles, name="DM")
+#         await user.add_roles(role)
+#         await ctx.send("You now have the role of DM")
+#         if discord.utils.get(ctx.guild.roles, name="Player") in user.roles:
+#             await user.remove_roles(discord.utils.get(ctx.guild.roles, name="Player"))
+#             await ctx.send("Also removed your role of Player")
+#     elif (arguments.lower() == "player"):
+#         role = discord.utils.get(ctx.guild.roles, name="Player")
+#         await user.add_roles(role)
+#         await ctx.send("You now have the role of Player")
+#         if discord.utils.get(ctx.guild.roles, name="DM") in user.roles:
+#             await user.remove_roles(discord.utils.get(ctx.guild.roles, name="DM"))
+#             await ctx.send("Also removed your role of DM")
+#     else:
+#         await ctx.send("That is not a role you can choose, please pick either 'Player' or 'DM'")
+    
 
 if token != "":
-    client.run(token)
+    if __name__ == "__main__":
+
+        if modules != "":
+            extensions = [x.strip() for x in modules.split(',')]
+            for extension in extensions:
+                try:
+                    client.load_extension('modules.' + extension)
+                except Exception as error:
+                    print(error)
+
+
+        client.run(token)

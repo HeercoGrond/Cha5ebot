@@ -1,53 +1,31 @@
-classes = []
+import discord
+from discord.ext import commands
+import os 
+import inspect
 
-class CharacterSheet:
-    def __init__(self):
-        # User Attributes
-        self.server = "3453453453"
-        self.userid = "3456356345"
-        
-        # Dnd Attributes
-        self.stats = {
-            "Strength": [0, 0],
-            "Dexterity": [0, 0],
-            "Constitution": [0, 0],
-            "Intelligence": [0, 0],
-            "Wisdom": [0, 0],
-            "Charisma": [0, 0]
-        }
+currentPath = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))[:-8] 
 
-        self.skills = {
-            "Athletics": [0, 0],
-            "Acrobatics": [0, 0],
-            "Sleight of Hand": [0, 0],
-            "Stealth": [0, 0],
-            "Arcana": [0, 0],
-            "History": [0, 0],
-            "Investigation": [0, 0],
-            "Nature": [0, 0],
-            "Religion": [0, 0],
-            "Animal Handling": [0, 0],
-            "Insight": [0, 0],
-            "Medicine": [0, 0],
-            "Perception": [0, 0],
-            "Survival": [0, 0],
-            "Deception": [0, 0],
-            "Intimidation": [0, 0],
-            "Performance": [0, 0],
-            "Persuasion": [0, 0]
-        }
+class CharacterSheet(commands.Cog):
+    def __init__(self, client):
+        self.client = client
 
-        self.equipment = { }
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print("loaded cog")
 
+    @commands.command()
+    async def charsheet(self, ctx):
+        if ctx.guild != None:
+            currentGuildPath = currentPath + "/guilds/" + str(ctx.guild.id)
+            print(currentGuildPath)
 
-    def encode():
-        print("encoding")
+            if not os.path.exists(currentGuildPath):
+                os.makedirs(currentGuildPath)
 
-    def decode(object):
-        print("decoding")
+            currentUserPath = currentGuildPath + "/user/" + str(ctx.author.id)
+            if not os.path.exists(currentUserPath):
+                os.makedirs(currentUserPath)
+                print("Created charsheet folder for user " + str(ctx.author.id))
 
-    def displaySheet():
-        print("display the sheet and stuff")
-        
-
-x = CharacterSheet()
+def setup(client):
+    client.add_cog(CharacterSheet(client))
